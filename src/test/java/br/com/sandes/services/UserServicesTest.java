@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-@SpringBootTest
+@WebMvcTest(UserServices.class)
 public class UserServicesTest {
 	
 	private UserServices service = new UserServices();
