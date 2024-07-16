@@ -14,21 +14,27 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'adopt'
+          distribution: 'temurin' # Adotei a distribuição mais recente conhecida como 'temurin'
 
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3.1.0
+        with:
+          username: mattsandes12
+          password: !docker:learn12
 
       - name: Build with Maven
         run: mvn clean install
@@ -42,74 +48,19 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'adopt'
-
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Push do Dockerhub
-        run: |
-        name: CI/CD Pipeline
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'adopt'
-
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Run tests
-        run: mvn test
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'adopt'
+          distribution: 'temurin' # Adotei a distribuição mais recente conhecida como 'temurin'
 
       - name: Build with Maven
         run: mvn clean install
 
       - name: Deploy to production
         run: |
-          docker push mattsandes12/cursoapi-curso-api:latest
+          docker tag mattsandes12/myapi-with-docker:latest mattsandes12/myapi-with-docker:${{ github.run_id }}
+          docker push mattsandes12/myapi-with-docker:${{ github.run_id }}
+          docker push mattsandes12/myapi-with-docker:latest
