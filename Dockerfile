@@ -5,7 +5,7 @@ FROM openjdk:21-jdk-slim
 ARG JAR_FILE=target/myApi-0.0.1-SNAPSHOT.jar
 
 # Copie o JAR da sua aplicação para o contêiner
-COPY myApi-0.0.1-SNAPSHOT.jar app.jar
+COPY targe/myApi-0.0.1-SNAPSHOT.jar app.jar
 
 # Defina o ponto de entrada para a aplicação
 ENTRYPOINT ["java", "-jar", "/app.jar"]
