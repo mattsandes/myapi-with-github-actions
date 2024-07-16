@@ -33,8 +33,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3.1.0
         with:
-          username: mattsandes12
-          password: !docker:learn12
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build with Maven
         run: mvn clean install
@@ -61,6 +61,6 @@ jobs:
 
       - name: Deploy to production
         run: |
-          docker tag mattsandes12/myapi-with-docker:latest mattsandes12/myapi-with-docker:${{ github.run_id }}
-          docker push mattsandes12/myapi-with-docker:${{ github.run_id }}
-          docker push mattsandes12/myapi-with-docker:latest
+          docker tag ${{secrets.DOCKER_USERNAME}}/myapi-with-docker:latest ${{secrets.DOCKER_USERNAME}}/myapi-with-docker:${{ github.run_id }}
+          docker push ${{secrets.DOCKER_USERNAME}}/myapi-with-docker:${{ github.run_id }}
+          docker push ${{secrets.DOCKER_USERNAME}}/myapi-with-docker:latest
