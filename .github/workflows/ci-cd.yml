@@ -112,4 +112,4 @@ jobs:
 
       - name: Deploy to production
         run: |
-        docker push mattsandes12/cursoapi-curso-api:latest
+          docker push mattsandes12/cursoapi-curso-api:latest
